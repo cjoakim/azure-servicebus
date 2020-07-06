@@ -31,6 +31,17 @@ $ dotnet add package Microsoft.Azure.ServiceBus --version 4.1.3
 $ dotnet build
 ```
 
+#### Environment Variables
+
+These are my personal naming standard, not a Microsoft standard.
+Get these values from Azure Portal in your Service Bus instance, under **Settings -> Shared access policies
+**.
+
+```
+private static string connString = Environment.GetEnvironmentVariable("AZURE_SERVICEBUS_CONN_STRING");
+private static string queueName  = Environment.GetEnvironmentVariable("AZURE_SERVICEBUS_QUEUE");
+```
+
 ### Put 20 messages on the Queue
 
 ```
