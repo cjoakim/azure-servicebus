@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Azure.ServiceBus;
 
 // Example C# .Net Core Azure Service Bus send and receive client console program.
-// Chris Joakim, Microsoft, 2020/07/05
+// Chris Joakim, Microsoft, 2020/07/06
 
 namespace ServiceBusConsoleApp {
     
@@ -54,9 +54,9 @@ namespace ServiceBusConsoleApp {
         private static RetryExponential GetRetryPolicy() {
             // See https://docs.microsoft.com/en-us/dotnet/api/microsoft.azure.servicebus.retryexponential?view=azure-dotnet
             return new RetryExponential(
-                minimumBackoff: TimeSpan.FromSeconds(10),
-                maximumBackoff: TimeSpan.FromSeconds(60),
-                maximumRetryCount: 10);
+                minimumBackoff: TimeSpan.FromSeconds(2),
+                maximumBackoff: TimeSpan.FromSeconds(30),
+                maximumRetryCount: 5);
         }
 
         static async Task SendMessagesAsync(int sendCount) {
@@ -66,7 +66,9 @@ namespace ServiceBusConsoleApp {
                     TimeSpan ts = DateTime.UtcNow - new DateTime(1970, 1, 1);
                     int epoch = (int) ts.TotalSeconds;
                     string timestamp = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.fffffffZ");
-                    string messageBody = $"Message {i} at {timestamp} {epoch}";
+                    string msg = "";
+                    if (i == 13) { msg = "TROUBLE!"; }
+                    string messageBody = $"Message {i} at {timestamp} {epoch} {msg}";
                     var message = new Message(Encoding.UTF8.GetBytes(messageBody));
                     Console.WriteLine($"Sending message: {messageBody}");
                     await queueClient.SendAsync(message);
