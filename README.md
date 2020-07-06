@@ -61,6 +61,8 @@ Hit Enter to continue...
 
 ### Receive the Messages, reprocessing #13 with Exponential Backoff
 
+Message #13 will be read, then abandoned, until it's **DeliveryCount** is 3.
+
 ```
 $ dotnet run receive 30
 ...
